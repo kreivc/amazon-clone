@@ -18,7 +18,6 @@ const Main = () => {
 			)}
 			{recentTransactions &&
 				recentTransactions.map((transaction, index) => {
-					console.log(transaction);
 					return (
 						<div key={index} className="flex flex-col">
 							<div className="flex justify-between mb-[20px] p-[30px] bg-[#42667e] text-white rounded-xl shadow-xl font-bold gap-[20px] text-xl">

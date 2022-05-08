@@ -7,7 +7,7 @@ import Transaction from "../components/Transaction";
 
 const History = () => {
 	const { ownedItems } = useContext(AmazonContext);
-
+	console.log(ownedItems);
 	return (
 		<div className="h-full w-full flex bg-[#fff]">
 			<Sidebar />

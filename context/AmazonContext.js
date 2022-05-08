@@ -86,7 +86,7 @@ export const AmazonProvider = ({ children }) => {
 			};
 
 			let transaction = await Moralis.transfer(options);
-			const receipt = await transaction.wait(4);
+			const receipt = await transaction.wait();
 
 			if (receipt) {
 				const res = userData[0].add("ownedAssets", {
@@ -95,6 +95,7 @@ export const AmazonProvider = ({ children }) => {
 					etherscanLink: `https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`,
 				});
 				await res.save().then(() => alert("Asset purchased successfully!"));
+				setOwnedItems([...ownedItems, asset]);
 			}
 		} catch (error) {
 			console.log(error);
@@ -140,7 +141,6 @@ export const AmazonProvider = ({ children }) => {
 
 	const getAssets = async () => {
 		try {
-			await enableWeb3();
 			setAssets(assetsData);
 		} catch (error) {
 			console.log(error);
@@ -148,13 +148,9 @@ export const AmazonProvider = ({ children }) => {
 	};
 
 	const getOwnedAssets = async () => {
-		console.log(userData[0]?.attributes.ownedAssets);
 		try {
-			if (userData[0].attributes.ownedAssets) {
-				setOwnedItems((prevItems) => [
-					...prevItems,
-					userData[0].attributes.ownedAssets,
-				]);
+			if (userData[0]) {
+				setOwnedItems([...userData[0]?.attributes?.ownedAssets]);
 			}
 		} catch (error) {
 			console.log(error);
@@ -163,13 +159,36 @@ export const AmazonProvider = ({ children }) => {
 
 	useEffect(() => {
 		(async () => {
+			await enableWeb3();
+			await getAssets();
+			await getOwnedAssets();
+		})();
+	}, [
+		isAuthenticated,
+		userData,
+		assetsData,
+		assetsDataisLoading,
+		userDataisLoading,
+	]);
+
+	useEffect(() => {
+		(async () => {
+			if (!isWeb3Enabled) {
+				await enableWeb3();
+			}
+
+			await listenToUpdate();
+
 			if (isAuthenticated) {
 				await getBalance();
-				await listenToUpdate();
 				const currentUser = await user?.get("nickname");
 				setUsername(currentUser);
 				const account = await user?.get("ethAddress");
 				setCurrentAccount(account);
+			} else {
+				setBalance("");
+				setUsername("");
+				setCurrentAccount("");
 			}
 		})();
 	}, [
@@ -180,13 +199,6 @@ export const AmazonProvider = ({ children }) => {
 		getBalance,
 		listenToUpdate,
 	]);
-
-	useEffect(() => {
-		(async () => {
-			await getAssets();
-			await getOwnedAssets();
-		})();
-	}, [isWeb3Enabled, assetsData, assetsDataisLoading]);
 
 	return (
 		<AmazonContext.Provider
