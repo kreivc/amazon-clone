@@ -124,7 +124,6 @@ export const AmazonProvider = ({ children }) => {
 		const transaction = await Moralis.executeFunction(options);
 		const receipt = await transaction.wait(4);
 		setIsLoading(false);
-		console.log(receipt);
 		setEtherscanLink(
 			`https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`
 		);
@@ -134,7 +133,6 @@ export const AmazonProvider = ({ children }) => {
 		let query = new Moralis.Query("EthTransactions");
 		let subscription = await query.subscribe();
 		subscription.on("update", async (object) => {
-			console.log("New transaction:", object);
 			setRecentTransactions([object]);
 		});
 	};
