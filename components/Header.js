@@ -5,12 +5,7 @@ import Image from "next/image";
 import { IoMdSearch } from "react-icons/io";
 import { AmazonContext } from "../context/AmazonContext";
 import { FaCoins } from "react-icons/fa";
-import {
-	ModalProvider,
-	Modal,
-	useModal,
-	ModalTransition,
-} from "react-simple-hook-modal";
+import { Modal, useModal, ModalTransition } from "react-simple-hook-modal";
 import "react-simple-hook-modal/dist/styles.css";
 import BuyModal from "./BuyModal";
 
@@ -43,28 +38,17 @@ const Header = () => {
 				<div className="flex items-center text-md font-bold cursor-pointer">
 					Featured
 				</div>
-				{balance ? (
-					<div
-						className="flex items-center text-md font-bold cursor-pointer"
-						onClick={openModal}
-					>
-						{balance}
-						<FaCoins className="ml-[10px]" />
-						<Modal isOpen={isModalOpen} transition={ModalTransition.SCALE}>
-							<BuyModal close={closeModal} buyTokens={buyTokens} />
-						</Modal>
-					</div>
-				) : (
-					<div
-						className="flex items-center text-md font-bold cursor-pointer"
-						onClick={openModal}
-					>
-						0 AC <FaCoins className="ml-[10px]" />
-						<Modal isOpen={isModalOpen} transition={ModalTransition.SCALE}>
-							<BuyModal close={closeModal} buyTokens={buyTokens} />
-						</Modal>
-					</div>
-				)}
+				<div
+					className="flex items-center text-md font-bold cursor-pointer"
+					onClick={openModal}
+				>
+					{balance ? balance : "0 AC"}
+					<FaCoins className="ml-[10px]" />
+					<Modal isOpen={isModalOpen} transition={ModalTransition.SCALE}>
+						<BuyModal close={closeModal} buyTokens={buyTokens} />
+					</Modal>
+				</div>
+
 				<CgMenuGridO
 					fontSize={30}
 					className="flex items-center text-md font-bold cursor-pointer"

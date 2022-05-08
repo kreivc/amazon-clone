@@ -25,9 +25,10 @@ const History = () => {
 						</div>
 					)}
 					<div className="flex gap-[50px] flex-row flex-wrap">
-						{ownedItems.map((item, index) => {
-							return <Transaction key={index} item={item} index={index} />;
-						})}
+						{ownedItems &&
+							ownedItems.map((item, index) => (
+								<Transaction key={index} item={item} index={index} />
+							))}
 					</div>
 				</div>
 			</div>
