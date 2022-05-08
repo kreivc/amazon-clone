@@ -4,9 +4,9 @@ import { AmazonContext } from "../context/AmazonContext";
 import Image from "next/image";
 
 const Card = ({ item }) => {
-	// const { buyAsset } = useContext(AmazonContext);
+	const { buyAsset } = useContext(AmazonContext);
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col" onClick={() => buyAsset(item.price, item)}>
 			<div className="h-[250px] w-[190px] rounded-3xl flex cursor-pointer transition-all duration-300  hover:scale-105 hover:shadow-xl overflow-hidden shadow-xl border-4 border-[#fb9701]">
 				<Image
 					src={item.src}
